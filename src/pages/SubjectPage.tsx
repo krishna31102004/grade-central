@@ -7,44 +7,71 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { subjects, type Subject, type PastPaper } from '@/data/subjects';
-import { Download, FileText, GraduationCap } from 'lucide-react';
+import { Download, FileText, GraduationCap, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useFileUploadContext } from '@/context/FileUploadContext';
+import FileUpload from '@/components/FileUpload';
 
 export default function SubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>();
   const { toast } = useToast();
+  const { getGroupedPapers } = useFileUploadContext();
   
   // Filter states
   const [yearFilter, setYearFilter] = useState<string>('all');
   const [sessionFilter, setSessionFilter] = useState<string>('all');
   const [paperTypeFilter, setPaperTypeFilter] = useState<string>('all');
+  const [showUpload, setShowUpload] = useState<boolean>(false);
   
   const subject = subjects.find(s => s.id === subjectId);
   
   if (!subject) {
     return <Navigate to="/" replace />;
   }
+
+  // Get uploaded papers for this subject
+  const uploadedPapers = getGroupedPapers(subject.code);
   
-  // Generate filter options
-  const years = Array.from(new Set(subject.pastPapers.map(p => p.year))).sort((a, b) => b - a);
+  // Generate filter options from both dummy and uploaded papers
+  const allPapers = [...subject.pastPapers, ...uploadedPapers.map(p => ({
+    year: p.year,
+    session: p.session,
+    paperNumber: p.paperNumber,
+    variant: p.variant,
+    paperFilename: p.paperFile?.file.name || '',
+    markSchemeFilename: p.markSchemeFile?.file.name || ''
+  }))];
+  
+  const years = Array.from(new Set(allPapers.map(p => p.year))).sort((a, b) => b - a);
   const sessions = ['FM', 'MJ', 'ND'];
-  const paperNumbers = Array.from(new Set(subject.pastPapers.map(p => p.paperNumber))).sort();
+  const paperNumbers = Array.from(new Set(allPapers.map(p => p.paperNumber))).sort();
   
-  // Filter past papers
-  const filteredPapers = useMemo(() => {
+  // Filter uploaded papers
+  const filteredUploadedPapers = useMemo(() => {
+    return uploadedPapers.filter(paper => {
+      if (yearFilter !== 'all' && paper.year !== parseInt(yearFilter)) return false;
+      if (sessionFilter !== 'all' && paper.session !== sessionFilter) return false;
+      if (paperTypeFilter !== 'all' && paper.paperNumber !== parseInt(paperTypeFilter)) return false;
+      return true;
+    });
+  }, [uploadedPapers, yearFilter, sessionFilter, paperTypeFilter]);
+  
+  // Filter dummy papers (only show if no uploaded papers available)
+  const filteredDummyPapers = useMemo(() => {
+    if (uploadedPapers.length > 0) return []; // Hide dummy papers when real ones are available
     return subject.pastPapers.filter(paper => {
       if (yearFilter !== 'all' && paper.year !== parseInt(yearFilter)) return false;
       if (sessionFilter !== 'all' && paper.session !== sessionFilter) return false;
       if (paperTypeFilter !== 'all' && paper.paperNumber !== parseInt(paperTypeFilter)) return false;
       return true;
     });
-  }, [subject.pastPapers, yearFilter, sessionFilter, paperTypeFilter]);
+  }, [subject.pastPapers, yearFilter, sessionFilter, paperTypeFilter, uploadedPapers.length]);
   
-  // Group papers by year and session
-  const groupedPapers = useMemo(() => {
-    const groups: { [key: string]: PastPaper[] } = {};
+  // Group uploaded papers by year and session
+  const groupedUploadedPapers = useMemo(() => {
+    const groups: { [key: string]: typeof uploadedPapers } = {};
     
-    filteredPapers.forEach(paper => {
+    filteredUploadedPapers.forEach(paper => {
       const key = `${paper.year}-${paper.session}`;
       if (!groups[key]) {
         groups[key] = [];
@@ -52,35 +79,86 @@ export default function SubjectPage() {
       groups[key].push(paper);
     });
     
-    // Sort groups by year (descending) then session
-    const sortedKeys = Object.keys(groups).sort((a, b) => {
-      const [yearA, sessionA] = a.split('-');
-      const [yearB, sessionB] = b.split('-');
-      
-      if (yearA !== yearB) {
-        return parseInt(yearB) - parseInt(yearA);
-      }
-      
-      const sessionOrder = { 'ND': 0, 'MJ': 1, 'FM': 2 };
-      return sessionOrder[sessionA as keyof typeof sessionOrder] - sessionOrder[sessionB as keyof typeof sessionOrder];
-    });
+    // Sort groups by year (desc) and then by session order
+    const sortedGroups: { [key: string]: typeof uploadedPapers } = {};
+    const sessionOrder = { 'FM': 0, 'MJ': 1, 'ND': 2 };
     
-    const sortedGroups: { [key: string]: PastPaper[] } = {};
-    sortedKeys.forEach(key => {
-      sortedGroups[key] = groups[key].sort((a, b) => a.variant.localeCompare(b.variant));
-    });
+    Object.keys(groups)
+      .sort((a, b) => {
+        const [yearA, sessionA] = a.split('-');
+        const [yearB, sessionB] = b.split('-');
+        
+        if (yearA !== yearB) {
+          return parseInt(yearB) - parseInt(yearA);
+        }
+        
+        return sessionOrder[sessionA as keyof typeof sessionOrder] - sessionOrder[sessionB as keyof typeof sessionOrder];
+      })
+      .forEach(key => {
+        sortedGroups[key] = groups[key].sort((a, b) => a.variant.localeCompare(b.variant));
+      });
     
     return sortedGroups;
-  }, [filteredPapers]);
-  
-  const handleDownload = (filename: string, type: 'notes' | 'paper' | 'markscheme') => {
-    toast({
-      title: "Download Started",
-      description: `Downloading ${filename}...`,
+  }, [filteredUploadedPapers]);
+
+  // Group dummy papers by year and session (legacy for empty state)
+  const groupedDummyPapers = useMemo(() => {
+    const groups: { [key: string]: PastPaper[] } = {};
+    
+    filteredDummyPapers.forEach(paper => {
+      const key = `${paper.year}-${paper.session}`;
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(paper);
     });
     
-    // Here you would implement actual file download
-    console.log(`Downloading ${type}: ${filename}`);
+    // Sort groups by year (desc) and then by session order
+    const sortedGroups: { [key: string]: PastPaper[] } = {};
+    const sessionOrder = { 'FM': 0, 'MJ': 1, 'ND': 2 };
+    
+    Object.keys(groups)
+      .sort((a, b) => {
+        const [yearA, sessionA] = a.split('-');
+        const [yearB, sessionB] = b.split('-');
+        
+        if (yearA !== yearB) {
+          return parseInt(yearB) - parseInt(yearA);
+        }
+        
+        return sessionOrder[sessionA as keyof typeof sessionOrder] - sessionOrder[sessionB as keyof typeof sessionOrder];
+      })
+      .forEach(key => {
+        sortedGroups[key] = groups[key].sort((a, b) => a.variant.localeCompare(b.variant));
+      });
+    
+    return sortedGroups;
+  }, [filteredDummyPapers]);
+  
+  const handleDownload = (file: string | File, type: 'notes' | 'paper' | 'markscheme') => {
+    if (file instanceof File) {
+      // Handle real uploaded file
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: `${type === 'paper' ? 'Question Paper' : type === 'markscheme' ? 'Mark Scheme' : 'Notes'} Downloaded`,
+        description: `${file.name} has been downloaded to your device.`,
+      });
+    } else {
+      // Handle dummy placeholder
+      toast({
+        title: "Download Started",
+        description: `Downloading ${file}...`,
+      });
+      console.log(`Downloading ${type}: ${file}`);
+    }
   };
   
   return (
@@ -103,7 +181,7 @@ export default function SubjectPage() {
             <span>•</span>
             <span>{subject.aLevelTopics.length} A-Level Topics</span>
             <span>•</span>
-            <span>{subject.pastPapers.length} Past Papers</span>
+            <span>{uploadedPapers.length > 0 ? uploadedPapers.length : subject.pastPapers.length} Past Papers</span>
           </div>
         </div>
         
@@ -117,6 +195,11 @@ export default function SubjectPage() {
             <TabsTrigger value="papers" className="flex items-center gap-2">
               <GraduationCap className="h-4 w-4" />
               Past Papers
+              {uploadedPapers.length > 0 && (
+                <Badge variant="secondary" className="text-xs ml-1">
+                  {uploadedPapers.length}
+                </Badge>
+              )}
             </TabsTrigger>
           </TabsList>
           
@@ -177,6 +260,40 @@ export default function SubjectPage() {
           
           {/* Past Papers Tab */}
           <TabsContent value="papers" className="space-y-6">
+            {/* Upload Section */}
+            {!showUpload && (
+              <Card>
+                <CardContent className="flex items-center justify-between p-6">
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">Upload Past Papers</h3>
+                    <p className="text-muted-foreground text-sm">
+                      Upload your own PDF files to replace placeholder papers
+                    </p>
+                  </div>
+                  <Button onClick={() => setShowUpload(true)} className="flex items-center gap-2">
+                    <Upload className="h-4 w-4" />
+                    Upload Files
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {showUpload && (
+              <div className="space-y-4">
+                <FileUpload 
+                  subjectCode={subject.code} 
+                  onFilesUploaded={() => setShowUpload(false)} 
+                />
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowUpload(false)}
+                  className="w-full"
+                >
+                  Done Uploading
+                </Button>
+              </div>
+            )}
+
             {/* Filters */}
             <Card>
               <CardHeader>
@@ -246,56 +363,120 @@ export default function SubjectPage() {
               </CardContent>
             </Card>
             
-            {/* Papers Grid */}
+            {/* Papers Grid - Show uploaded papers first, fallback to dummy */}
             <div className="space-y-6">
-              {Object.entries(groupedPapers).map(([groupKey, papers]) => {
-                const [year, session] = groupKey.split('-');
-                const sessionName = session === 'FM' ? 'February/March' : session === 'MJ' ? 'May/June' : 'October/November';
-                
-                return (
-                  <Card key={groupKey}>
-                    <CardHeader>
-                      <CardTitle>{year} • {sessionName} ({session})</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {papers.map(paper => (
-                          <div key={`${paper.year}-${paper.session}-${paper.variant}`} className="p-4 rounded-lg border bg-muted/30">
-                            <div className="flex items-center justify-between mb-3">
-                              <Badge variant="outline">Paper {paper.paperNumber}</Badge>
-                              <span className="text-sm font-mono text-muted-foreground">Variant {paper.variant}</span>
+              {uploadedPapers.length > 0 ? (
+                // Show uploaded papers
+                Object.entries(groupedUploadedPapers).map(([groupKey, papers]) => {
+                  const [year, session] = groupKey.split('-');
+                  const sessionName = session === 'FM' ? 'February/March' : session === 'MJ' ? 'May/June' : 'October/November';
+                  
+                  return (
+                    <Card key={groupKey}>
+                      <CardHeader>
+                        <CardTitle>{year} • {sessionName} ({session})</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {papers.map(paper => (
+                            <div key={`${paper.year}-${paper.session}-${paper.variant}`} className="p-4 rounded-lg border bg-muted/30">
+                              <div className="flex items-center justify-between mb-3">
+                                <Badge variant="outline">Paper {paper.paperNumber}</Badge>
+                                <span className="text-sm font-mono text-muted-foreground">Variant {paper.variant}</span>
+                              </div>
+                              <div className="space-y-2">
+                                {paper.paperFile && (
+                                  <Button
+                                    size="sm"
+                                    className="w-full download-btn"
+                                    onClick={() => handleDownload(paper.paperFile!.file, 'paper')}
+                                  >
+                                    <Download className="h-4 w-4 mr-2" />
+                                    Download Paper
+                                  </Button>
+                                )}
+                                {paper.markSchemeFile && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="w-full download-btn"
+                                    onClick={() => handleDownload(paper.markSchemeFile!.file, 'markscheme')}
+                                  >
+                                    <Download className="h-4 w-4 mr-2" />
+                                    Download Mark Scheme
+                                  </Button>
+                                )}
+                                {!paper.paperFile && !paper.markSchemeFile && (
+                                  <p className="text-sm text-muted-foreground text-center py-2">
+                                    No files uploaded for this variant
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                            <div className="space-y-2">
-                              <Button
-                                size="sm"
-                                className="w-full download-btn"
-                                onClick={() => handleDownload(paper.paperFilename, 'paper')}
-                              >
-                                <Download className="h-4 w-4 mr-2" />
-                                Download Paper
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="w-full download-btn"
-                                onClick={() => handleDownload(paper.markSchemeFilename, 'markscheme')}
-                              >
-                                <Download className="h-4 w-4 mr-2" />
-                                Download Mark Scheme
-                              </Button>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })
+              ) : (
+                // Show dummy papers as fallback
+                Object.entries(groupedDummyPapers).map(([groupKey, papers]) => {
+                  const [year, session] = groupKey.split('-');
+                  const sessionName = session === 'FM' ? 'February/March' : session === 'MJ' ? 'May/June' : 'October/November';
+                  
+                  return (
+                    <Card key={groupKey}>
+                      <CardHeader>
+                        <CardTitle>{year} • {sessionName} ({session})</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {papers.map(paper => (
+                            <div key={`${paper.year}-${paper.session}-${paper.variant}`} className="p-4 rounded-lg border bg-muted/30">
+                              <div className="flex items-center justify-between mb-3">
+                                <Badge variant="outline">Paper {paper.paperNumber}</Badge>
+                                <span className="text-sm font-mono text-muted-foreground">Variant {paper.variant}</span>
+                              </div>
+                              <div className="space-y-2">
+                                <Button
+                                  size="sm"
+                                  className="w-full download-btn"
+                                  onClick={() => handleDownload(paper.paperFilename, 'paper')}
+                                >
+                                  <Download className="h-4 w-4 mr-2" />
+                                  Download Paper (Demo)
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="w-full download-btn"
+                                  onClick={() => handleDownload(paper.markSchemeFilename, 'markscheme')}
+                                >
+                                  <Download className="h-4 w-4 mr-2" />
+                                  Download Mark Scheme (Demo)
+                                </Button>
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })
+              )}
               
-              {Object.keys(groupedPapers).length === 0 && (
+              {uploadedPapers.length === 0 && Object.keys(groupedDummyPapers).length === 0 && (
                 <Card>
                   <CardContent className="text-center py-8">
                     <p className="text-muted-foreground">No papers found with the current filters.</p>
+                    <Button 
+                      className="mt-4" 
+                      onClick={() => setShowUpload(true)}
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Upload Your First Papers
+                    </Button>
                   </CardContent>
                 </Card>
               )}
