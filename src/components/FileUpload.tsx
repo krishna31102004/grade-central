@@ -95,23 +95,23 @@ export default function FileUpload({ subjectCode, onFilesUploaded }: FileUploadP
                 <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
                     <File className="h-4 w-4 text-red-600" />
-                    <div>
-                      <p className="text-sm font-medium">{file.file.name}</p>
-                      <div className="flex gap-2 mt-1">
-                        <Badge variant="secondary" className="text-xs">
-                          {file.subjectCode}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {file.variant.toUpperCase()}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {file.session} {file.year}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {file.type.toUpperCase()}
-                        </Badge>
-                      </div>
-                    </div>
+                     <div>
+                       <p className="text-sm font-medium">{file.fileName}</p>
+                       <div className="flex gap-2 mt-1">
+                         <Badge variant="secondary" className="text-xs">
+                           {file.subjectCode}
+                         </Badge>
+                         <Badge variant="outline" className="text-xs">
+                           {file.variant.toUpperCase()}
+                         </Badge>
+                         <Badge variant="outline" className="text-xs">
+                           {file.session} {file.year}
+                         </Badge>
+                         <Badge variant="outline" className="text-xs">
+                           {file.type.toUpperCase()}
+                         </Badge>
+                       </div>
+                     </div>
                   </div>
                   <Button
                     variant="ghost"

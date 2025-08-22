@@ -1,8 +1,27 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+export interface StoredPastPaper {
+  id: string;
+  user_id: string | null;
+  subject_code: string;
+  variant: string;
+  paper_number: number;
+  session: 'FM' | 'MJ' | 'ND';
+  year: number;
+  type: 'qp' | 'ms';
+  file_name: string;
+  file_path: string;
+  file_size: number | null;
+  uploaded_at: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface ParsedFile {
-  file: File;
+  id?: string;
+  file?: File;
   subjectCode: string;
   variant: string;
   paperNumber: number;
@@ -10,6 +29,8 @@ export interface ParsedFile {
   year: number;
   type: 'qp' | 'ms';
   url: string;
+  fileName: string;
+  fileSize?: number;
 }
 
 export interface UploadedPastPaper {
@@ -58,14 +79,66 @@ export function useFileUpload() {
       paperNumber,
       session,
       year,
-      type: type.toLowerCase() as 'qp' | 'ms'
+      type: type.toLowerCase() as 'qp' | 'ms',
+      fileName: filename
     };
   }, []);
+
+  // Load past papers from database
+  const loadPastPapers = useCallback(async (subjectCode?: string) => {
+    try {
+      let query = supabase.from('past_papers').select('*');
+      
+      if (subjectCode) {
+        query = query.eq('subject_code', subjectCode);
+      }
+      
+      const { data: papers, error } = await query.order('year', { ascending: false });
+      
+      if (error) {
+        console.error('Error loading past papers:', error);
+        return [];
+      }
+
+      // Convert database records to ParsedFile format
+      const parsedFiles: ParsedFile[] = papers?.map(paper => ({
+        id: paper.id,
+        subjectCode: paper.subject_code,
+        variant: paper.variant,
+        paperNumber: paper.paper_number,
+        session: paper.session as 'FM' | 'MJ' | 'ND',
+        year: paper.year,
+        type: paper.type as 'qp' | 'ms',
+        fileName: paper.file_name,
+        fileSize: paper.file_size || undefined,
+        url: supabase.storage.from('past-papers').getPublicUrl(paper.file_path).data.publicUrl
+      })) || [];
+
+      setUploadedFiles(parsedFiles);
+      return parsedFiles;
+    } catch (error) {
+      console.error('Error loading past papers:', error);
+      toast({
+        title: "Error loading files",
+        description: "Failed to load past papers from database.",
+        variant: "destructive",
+      });
+      return [];
+    }
+  }, [toast]);
+
+  // Load files on mount
+  useEffect(() => {
+    loadPastPapers();
+  }, [loadPastPapers]);
 
   const uploadFiles = useCallback(async (files: FileList | File[]) => {
     const fileArray = Array.from(files);
     const newUploadedFiles: ParsedFile[] = [];
     let errorCount = 0;
+
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
 
     for (const file of fileArray) {
       if (file.type !== 'application/pdf') {
@@ -79,31 +152,89 @@ export function useFileUpload() {
         continue;
       }
 
-      // Create object URL for the file
-      const url = URL.createObjectURL(file);
+      try {
+        // Create file path
+        const filePath = `${parsedData.subjectCode}/${parsedData.year}/${parsedData.session}/${file.name}`;
+        
+        // Upload file to Supabase storage
+        const { error: uploadError } = await supabase.storage
+          .from('past-papers')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false
+          });
 
-      const parsedFile: ParsedFile = {
-        file,
-        url,
-        ...parsedData
-      };
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          errorCount++;
+          continue;
+        }
 
-      newUploadedFiles.push(parsedFile);
+        // Save metadata to database
+        const { data: savedPaper, error: dbError } = await supabase
+          .from('past_papers')
+          .insert({
+            user_id: user?.id || null,
+            subject_code: parsedData.subjectCode,
+            variant: parsedData.variant,
+            paper_number: parsedData.paperNumber,
+            session: parsedData.session,
+            year: parsedData.year,
+            type: parsedData.type,
+            file_name: file.name,
+            file_path: filePath,
+            file_size: file.size
+          })
+          .select()
+          .single();
+
+        if (dbError) {
+          console.error('Database error:', dbError);
+          // Clean up uploaded file
+          await supabase.storage.from('past-papers').remove([filePath]);
+          errorCount++;
+          continue;
+        }
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('past-papers')
+          .getPublicUrl(filePath);
+
+        const parsedFile: ParsedFile = {
+          id: savedPaper.id,
+          subjectCode: parsedData.subjectCode,
+          variant: parsedData.variant,
+          paperNumber: parsedData.paperNumber,
+          session: parsedData.session,
+          year: parsedData.year,
+          type: parsedData.type,
+          fileName: file.name,
+          fileSize: file.size,
+          url: publicUrl
+        };
+
+        newUploadedFiles.push(parsedFile);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        errorCount++;
+      }
     }
 
+    // Update local state
     setUploadedFiles(prev => [...prev, ...newUploadedFiles]);
 
     if (newUploadedFiles.length > 0) {
       toast({
         title: "Files uploaded successfully",
-        description: `${newUploadedFiles.length} files processed successfully.`,
+        description: `${newUploadedFiles.length} files uploaded to database.`,
       });
     }
 
     if (errorCount > 0) {
       toast({
         title: "Some files couldn't be processed",
-        description: `${errorCount} files had invalid names or weren't PDFs.`,
+        description: `${errorCount} files failed to upload.`,
         variant: "destructive",
       });
     }
@@ -111,14 +242,52 @@ export function useFileUpload() {
     return newUploadedFiles;
   }, [parseFilename, toast]);
 
-  const removeFile = useCallback((fileToRemove: ParsedFile) => {
-    setUploadedFiles(prev => {
-      const updated = prev.filter(f => f !== fileToRemove);
-      // Revoke the object URL to free memory
-      URL.revokeObjectURL(fileToRemove.url);
-      return updated;
-    });
-  }, []);
+  const removeFile = useCallback(async (fileToRemove: ParsedFile) => {
+    try {
+      if (fileToRemove.id) {
+        // Remove from database
+        const { error: dbError } = await supabase
+          .from('past_papers')
+          .delete()
+          .eq('id', fileToRemove.id);
+
+        if (dbError) {
+          console.error('Error removing from database:', dbError);
+          toast({
+            title: "Error removing file",
+            description: "Failed to remove file from database.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        // Remove from storage
+        const filePath = `${fileToRemove.subjectCode}/${fileToRemove.year}/${fileToRemove.session}/${fileToRemove.fileName}`;
+        const { error: storageError } = await supabase.storage
+          .from('past-papers')
+          .remove([filePath]);
+
+        if (storageError) {
+          console.error('Error removing from storage:', storageError);
+        }
+      }
+
+      // Update local state
+      setUploadedFiles(prev => prev.filter(f => f !== fileToRemove));
+      
+      toast({
+        title: "File removed",
+        description: "File has been successfully removed.",
+      });
+    } catch (error) {
+      console.error('Error removing file:', error);
+      toast({
+        title: "Error removing file",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
 
   const getGroupedPapers = useCallback((subjectCode: string): UploadedPastPaper[] => {
     const subjectFiles = uploadedFiles.filter(f => f.subjectCode === subjectCode);
@@ -151,12 +320,31 @@ export function useFileUpload() {
     });
   }, [uploadedFiles]);
 
-  const clearAllFiles = useCallback(() => {
-    uploadedFiles.forEach(file => {
-      URL.revokeObjectURL(file.url);
-    });
-    setUploadedFiles([]);
-  }, [uploadedFiles]);
+  const clearAllFiles = useCallback(async () => {
+    try {
+      // Remove all files from database and storage
+      for (const file of uploadedFiles) {
+        if (file.id) {
+          await supabase.from('past_papers').delete().eq('id', file.id);
+          const filePath = `${file.subjectCode}/${file.year}/${file.session}/${file.fileName}`;
+          await supabase.storage.from('past-papers').remove([filePath]);
+        }
+      }
+      
+      setUploadedFiles([]);
+      toast({
+        title: "All files removed",
+        description: "All files have been successfully removed.",
+      });
+    } catch (error) {
+      console.error('Error clearing files:', error);
+      toast({
+        title: "Error clearing files",
+        description: "Some files may not have been removed.",
+        variant: "destructive",
+      });
+    }
+  }, [uploadedFiles, toast]);
 
   return {
     uploadedFiles,
@@ -164,6 +352,7 @@ export function useFileUpload() {
     removeFile,
     clearAllFiles,
     getGroupedPapers,
-    parseFilename
+    parseFilename,
+    loadPastPapers
   };
 }
