@@ -33,6 +33,8 @@ export default function NotesUpload({ onNotesUploaded }: NotesUploadProps) {
   const [description, setDescription] = useState<string>('');
   const [isUploading, setIsUploading] = useState(false);
 
+  console.log('NotesUpload component rendered', { uploadedNotes: uploadedNotes.length });
+
   const handleFileSelect = useCallback(() => {
     fileInputRef.current?.click();
   }, []);

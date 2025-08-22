@@ -82,15 +82,21 @@ export function useNotesUpload() {
     title: string, 
     description?: string
   ) => {
+    console.log('Starting notes upload:', { files: files.length, subjectCode, title, description });
+    
     const fileArray = Array.from(files);
     const newUploadedNotes: ParsedNote[] = [];
     let errorCount = 0;
 
     // Get current user
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    console.log('User auth check:', { user: user?.id, error: userError });
 
     for (const file of fileArray) {
+      console.log('Processing file:', file.name, file.type);
+      
       if (file.type !== 'application/pdf') {
+        console.error('Invalid file type:', file.type);
         errorCount++;
         continue;
       }
@@ -98,6 +104,7 @@ export function useNotesUpload() {
       try {
         // Create file path
         const filePath = `${subjectCode}/${Date.now()}-${file.name}`;
+        console.log('Uploading to path:', filePath);
         
         // Upload file to Supabase storage
         const { error: uploadError } = await supabase.storage
@@ -108,33 +115,38 @@ export function useNotesUpload() {
           });
 
         if (uploadError) {
-          console.error('Upload error:', uploadError);
+          console.error('Storage upload error:', uploadError);
           errorCount++;
           continue;
         }
+        console.log('File uploaded successfully to storage');
 
         // Save metadata to database
+        const insertData = {
+          user_id: user?.id || null,
+          subject_code: subjectCode,
+          title: title,
+          description: description || null,
+          file_name: file.name,
+          file_path: filePath,
+          file_size: file.size
+        };
+        console.log('Inserting to database:', insertData);
+
         const { data: savedNote, error: dbError } = await supabase
           .from('notes')
-          .insert({
-            user_id: user?.id || null,
-            subject_code: subjectCode,
-            title: title,
-            description: description || null,
-            file_name: file.name,
-            file_path: filePath,
-            file_size: file.size
-          })
+          .insert(insertData)
           .select()
           .single();
 
         if (dbError) {
-          console.error('Database error:', dbError);
+          console.error('Database insert error:', dbError);
           // Clean up uploaded file
           await supabase.storage.from('notes').remove([filePath]);
           errorCount++;
           continue;
         }
+        console.log('Note saved to database:', savedNote);
 
         // Get public URL
         const { data: { publicUrl } } = supabase.storage
@@ -152,6 +164,7 @@ export function useNotesUpload() {
         };
 
         newUploadedNotes.push(parsedNote);
+        console.log('Note processed successfully:', parsedNote);
       } catch (error) {
         console.error('Error uploading note:', error);
         errorCount++;
@@ -160,6 +173,7 @@ export function useNotesUpload() {
 
     // Update local state
     setUploadedNotes(prev => [...prev, ...newUploadedNotes]);
+    console.log('Upload complete:', { successful: newUploadedNotes.length, errors: errorCount });
 
     if (newUploadedNotes.length > 0) {
       toast({
