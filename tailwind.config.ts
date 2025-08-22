@@ -52,15 +52,30 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Subject-specific colors
+				subjects: {
+					mathematics: 'hsl(var(--mathematics))',
+					'mathematics-dark': 'hsl(var(--mathematics-dark))',
+					'further-math': 'hsl(var(--further-math))',
+					'further-math-dark': 'hsl(var(--further-math-dark))',
+					physics: 'hsl(var(--physics))',
+					'physics-dark': 'hsl(var(--physics-dark))',
+					chemistry: 'hsl(var(--chemistry))',
+					'chemistry-dark': 'hsl(var(--chemistry-dark))',
+					biology: 'hsl(var(--biology))',
+					'biology-dark': 'hsl(var(--biology-dark))',
+					economics: 'hsl(var(--economics))',
+					'economics-dark': 'hsl(var(--economics-dark))',
+					'computer-science': 'hsl(var(--computer-science))',
+					'computer-science-dark': 'hsl(var(--computer-science-dark))',
+					sociology: 'hsl(var(--sociology))',
+					'sociology-dark': 'hsl(var(--sociology-dark))',
+					psychology: 'hsl(var(--psychology))',
+					'psychology-dark': 'hsl(var(--psychology-dark))',
+					accounting: 'hsl(var(--accounting))',
+					'accounting-dark': 'hsl(var(--accounting-dark))',
+					business: 'hsl(var(--business))',
+					'business-dark': 'hsl(var(--business-dark))',
 				}
 			},
 			borderRadius: {
