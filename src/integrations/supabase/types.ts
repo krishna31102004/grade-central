@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      notes: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          subject_code: string
+          title: string
+          updated_at: string
+          uploaded_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          subject_code: string
+          title: string
+          updated_at?: string
+          uploaded_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          subject_code?: string
+          title?: string
+          updated_at?: string
+          uploaded_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      past_papers: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          paper_number: number
+          session: string
+          subject_code: string
+          type: string
+          updated_at: string
+          uploaded_at: string
+          user_id: string | null
+          variant: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          paper_number: number
+          session: string
+          subject_code: string
+          type: string
+          updated_at?: string
+          uploaded_at?: string
+          user_id?: string | null
+          variant: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          paper_number?: number
+          session?: string
+          subject_code?: string
+          type?: string
+          updated_at?: string
+          uploaded_at?: string
+          user_id?: string | null
+          variant?: string
+          year?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
