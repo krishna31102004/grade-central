@@ -469,19 +469,24 @@ function generatePastPapers(code: string, variants: number[]): PastPaper[] {
   const papers: PastPaper[] = [];
   const sessions: ('FM' | 'MJ' | 'ND')[] = ['FM', 'MJ', 'ND'];
   
-  for (let year = 2016; year <= 2025; year++) {
+  // Generate papers for years 2020-2025 with comprehensive coverage
+  for (let year = 2020; year <= 2025; year++) {
     for (const session of sessions) {
       for (const variant of variants) {
         const paperNumber = Math.floor(variant / 10);
         const variantStr = variant.toString();
+        
+        // Convert session codes to match CIE format: FM=m, MJ=s, ND=w
+        const sessionCode = session === 'FM' ? 'm' : session === 'MJ' ? 's' : 'w';
+        const yearCode = year.toString().slice(-2); // Get last 2 digits of year
         
         papers.push({
           year,
           session,
           paperNumber,
           variant: variantStr,
-          paperFilename: `${code}_${variantStr}_${session}${year}-paper.pdf`,
-          markSchemeFilename: `${code}_${variantStr}_${session}${year}-ms.pdf`,
+          paperFilename: `${code}_${variantStr}_${sessionCode}${yearCode}-paper.pdf`,
+          markSchemeFilename: `${code}_${variantStr}_${sessionCode}${yearCode}-ms.pdf`,
         });
       }
     }
