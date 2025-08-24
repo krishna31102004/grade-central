@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import SubjectCard from '@/components/SubjectCard';
 import { subjects } from '@/data/subjects';
@@ -27,7 +28,10 @@ export default function Homepage() {
           A-Level Central
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-          A student-made hub curating resources from incredible educators and platforms, aligned with the CIE A-Level curriculum. None of this is mine — all credit belongs to them. This project helps students find everything in one place, boosts the student community, and directs more traffic and appreciation back to the original creators.
+          A student-made hub curating resources from incredible educators and platforms, aligned with the CIE A-Level curriculum. None of this is mine — all credit belongs to them. This project simply helps students find everything in one place, boosts the student community, and directs more traffic and appreciation back to the original creators.
+        </p>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+          ➡️ Please also see the <Link to="/disclaimer-credits" className="text-primary hover:underline">Disclaimer and Credits</Link> sections, where I have listed and linked to all the original websites and contributors whose resources are shared here. Every PDF and note belongs to them — I am only collating. If you are one of the contributors and have any issue, please reach out and I will respectfully adjust (remove, replace with links, or highlight differently).
         </p>
         
         {/* Featured Search */}
