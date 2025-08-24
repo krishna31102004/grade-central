@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Home, BookOpen, MessageSquare, Send } from 'lucide-react';
+import { Search, Home, BookOpen, MessageSquare } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 interface LayoutProps {
@@ -67,17 +67,6 @@ export default function Layout({ children, onSearchChange, searchQuery }: Layout
               <span className="hidden sm:inline">Subjects</span>
             </Link>
             <Link
-              to="/contribute"
-              className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
-                isActive('/contribute') 
-                  ? 'bg-accent text-accent-foreground font-medium' 
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-              }`}
-            >
-              <Send className="h-4 w-4" />
-              <span className="hidden sm:inline">Contribute</span>
-            </Link>
-            <Link
               to="/feedback"
               className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
                 isActive('/feedback') 
@@ -118,7 +107,6 @@ export default function Layout({ children, onSearchChange, searchQuery }: Layout
               <ul className="space-y-2 text-sm">
                 <li><Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Home</Link></li>
                 <li><Link to="/subjects" className="text-muted-foreground hover:text-foreground transition-colors">All Subjects</Link></li>
-                <li><Link to="/contribute" className="text-muted-foreground hover:text-foreground transition-colors">Contribute</Link></li>
                 <li><Link to="/feedback" className="text-muted-foreground hover:text-foreground transition-colors">Send Feedback</Link></li>
               </ul>
             </div>
@@ -126,7 +114,7 @@ export default function Layout({ children, onSearchChange, searchQuery }: Layout
             <div>
               <h3 className="font-medium mb-3">Contact & Support</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Email: support@alevelcentral.com</li>
+                <li>Email: aditya160509@gmail.com</li>
                 <li>© 2024 A-Level Central. All rights reserved.</li>
                 <li>
                   <Link to="/feedback" className="hover:text-foreground transition-colors">

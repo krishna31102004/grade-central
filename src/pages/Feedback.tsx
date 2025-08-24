@@ -205,17 +205,17 @@ export default function Feedback() {
               <div>
                 <strong>General Inquiries</strong>
                 <br />
-                <span className="text-muted-foreground">contact@alevelcentral.com</span>
+                <span className="text-muted-foreground">aditya160509@gmail.com</span>
               </div>
               <div>
                 <strong>Technical Support</strong>
                 <br />
-                <span className="text-muted-foreground">support@alevelcentral.com</span>
+                <span className="text-muted-foreground">aditya160509@gmail.com</span>
               </div>
               <div>
                 <strong>Content Issues</strong>
                 <br />
-                <span className="text-muted-foreground">content@alevelcentral.com</span>
+                <span className="text-muted-foreground">aditya160509@gmail.com</span>
               </div>
             </div>
           </CardContent>

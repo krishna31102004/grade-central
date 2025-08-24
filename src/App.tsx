@@ -7,7 +7,6 @@ import { FileUploadProvider } from "@/context/FileUploadContext";
 import Homepage from "./pages/Homepage";
 import SubjectPage from "./pages/SubjectPage";
 import AllSubjects from "./pages/AllSubjects";
-import Contribute from "./pages/Contribute";
 import Feedback from "./pages/Feedback";
 import DisclaimerCredits from "./pages/DisclaimerCredits";
 import NotFound from "./pages/NotFound";
@@ -25,7 +24,6 @@ const App = () => (
             <Route path="/" element={<Homepage />} />
             <Route path="/subjects" element={<AllSubjects />} />
             <Route path="/subject/:subjectId" element={<SubjectPage />} />
-            <Route path="/contribute" element={<Contribute />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/disclaimer-credits" element={<DisclaimerCredits />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
