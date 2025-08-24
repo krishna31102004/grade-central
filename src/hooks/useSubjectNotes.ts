@@ -24,8 +24,8 @@ export function useSubjectNotes(subjectCode: string) {
         
         // Map subject codes to folder names
         const folderMap: Record<string, string> = {
-          '9709': 'Math',
-          '9231': 'Further Maths', 
+          '9709': 'Mathematics',
+          '9231': 'Further Mathematics', 
           '9706': 'Accounting',
           '9700': 'Biology',
           '9701': 'Chemistry',
