@@ -27,8 +27,7 @@ export default function Homepage() {
           A-Level Central
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-          Helping A-Level students succeed with reliable, free notes and past papers.
-          Find everything you need for your CIE A-Level studies in one organized place.
+          A student-made hub curating resources from incredible educators and platforms, aligned with the CIE A-Level curriculum. None of this is mine — all credit belongs to them. This project helps students find everything in one place, boosts the student community, and directs more traffic and appreciation back to the original creators.
         </p>
         
         {/* Featured Search */}
@@ -101,8 +100,8 @@ export default function Homepage() {
               <p className="text-muted-foreground">Study Topics</p>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary mb-2">2016-2025</div>
-              <p className="text-muted-foreground">Past Papers Coverage</p>
+              <div className="text-3xl font-bold text-primary mb-2">50+</div>
+              <p className="text-muted-foreground">Contributors Credited</p>
             </div>
           </div>
         </div>

@@ -26,7 +26,7 @@ export default function SubjectCard({ subject }: SubjectCardProps) {
           </p>
           <div className="mt-4 pt-4 border-t border-current/20">
             <p className="text-xs opacity-70" style={{ color: `hsl(var(--${subject.colorDark.replace('subjects-', '')}))` }}>
-              {subject.asTopics.length + subject.aLevelTopics.length} Topics • Past Papers Available
+              {subject.asTopics.length + subject.aLevelTopics.length} Topics Available
             </p>
           </div>
         </CardContent>

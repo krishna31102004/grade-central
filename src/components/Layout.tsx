@@ -109,7 +109,7 @@ export default function Layout({ children, onSearchChange, searchQuery }: Layout
                 <span className="font-semibold hero-heading">A-Level Central</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Helping A-Level students succeed with reliable, free notes and past papers.
+                A student-made hub curating resources from incredible educators and platforms, aligned with the CIE A-Level curriculum. None of this is mine — all credit belongs to them. This project helps students find everything in one place, boosts the student community, and directs more traffic and appreciation back to the original creators.
               </p>
             </div>
             
