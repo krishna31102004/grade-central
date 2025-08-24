@@ -7,6 +7,7 @@ import { subjects, type Subject } from '@/data/subjects';
 import { Download, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSubjectNotes } from '@/hooks/useSubjectNotes';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function SubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>();
@@ -20,20 +21,37 @@ export default function SubjectPage() {
 
   const { notes, isLoading, error, getPublicUrl, findNoteForTopic } = useSubjectNotes(subject.code);
   
-  const handleDownload = (url: string, fileName: string) => {
-    // Open the file in a new tab for download
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    toast({
-      title: "Download Started",
-      description: `Downloading ${fileName}...`,
-    });
+  const handleDownload = async (filePath: string, fileName: string) => {
+    try {
+      // Prefer a short-lived signed URL to avoid extension blocking and ensure access
+      const { data, error } = await supabase.storage
+        .from('notes')
+        .createSignedUrl(filePath, 300, { download: fileName });
+
+      const url = data?.signedUrl 
+        ?? `${supabase.storage.from('notes').getPublicUrl(filePath).data.publicUrl}?download=1`;
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast({
+        title: 'Download Started',
+        description: `Downloading ${fileName}...`,
+      });
+    } catch (e) {
+      toast({
+        title: 'Download failed',
+        description: 'Please try again in a moment.',
+        variant: 'destructive',
+      });
+      console.error('Download error', e);
+    }
   };
 
   const renderTopicCard = (topic: any) => {
@@ -48,7 +66,7 @@ export default function SubjectPage() {
           <Button
             size="sm"
             className="download-btn w-full"
-            onClick={() => handleDownload(getPublicUrl(note.file_path), note.file_name)}
+            onClick={async () => handleDownload(note.file_path, note.file_name)}
           >
             <Download className="h-4 w-4 mr-2" />
             Download Notes
