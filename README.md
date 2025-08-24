@@ -31,10 +31,10 @@ The goal is simple: to bring together resources from different platforms into **
 
 ## 🚀 Tech Stack  
 
-- **Frontend:** React (Lovable-generated with custom prompts)  
-- **Backend/Storage:** Supabase (for file uploads and metadata)  
-- **Hosting:** Lovable (deployment)  
-- **Version Control:** GitHub  
+- **Frontend / Logic:** TypeScript  
+- **Database / Queries:** PLpgSQL (Supabase integration)  
+- **Styling:** CSS  
+- **Other:** Helper scripts and automation  
 
 ---
 
