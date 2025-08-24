@@ -133,6 +133,11 @@ export default function Layout({ children, onSearchChange, searchQuery }: Layout
                     Report an issue or suggest improvements
                   </Link>
                 </li>
+                <li>
+                  <Link to="/disclaimer-credits" className="hover:text-foreground transition-colors">
+                    Disclaimer & Credits
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

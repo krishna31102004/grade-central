@@ -9,6 +9,7 @@ import SubjectPage from "./pages/SubjectPage";
 import AllSubjects from "./pages/AllSubjects";
 import Contribute from "./pages/Contribute";
 import Feedback from "./pages/Feedback";
+import DisclaimerCredits from "./pages/DisclaimerCredits";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/subject/:subjectId" element={<SubjectPage />} />
             <Route path="/contribute" element={<Contribute />} />
             <Route path="/feedback" element={<Feedback />} />
+            <Route path="/disclaimer-credits" element={<DisclaimerCredits />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
