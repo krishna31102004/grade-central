@@ -95,26 +95,27 @@ export function useSubjectNotes(subjectCode: string) {
     return data.publicUrl;
   };
 
-  // Function to find a note for a specific topic
+  // Function to find a note for a specific topic using full title match (case-insensitive)
   const findNoteForTopic = (topicId: string, topicTitle: string): SubjectNote | null => {
-    // First try to find by exact topic ID match in title
-    let note = notes.find(note => 
-      note.title.toLowerCase().includes(topicId.toLowerCase()) ||
-      note.file_name.toLowerCase().includes(topicId.toLowerCase())
-    );
+    const normalize = (str: string) =>
+      str
+        .toLowerCase()
+        // remove topic numbering like "1.1 " at the start
+        .replace(/^\d+(?:\.\d+)*\s+/, '')
+        // treat hyphens/underscores as spaces and drop extension
+        .replace(/\.(pdf)$/g, '')
+        .replace(/[-_]+/g, ' ')
+        // collapse multiple spaces and trim
+        .replace(/\s+/g, ' ')
+        .trim();
 
-    // If not found, try to match by topic title keywords
-    if (!note) {
-      const topicKeywords = topicTitle.toLowerCase()
-        .replace(/^\d+\.\d+\s+/, '') // Remove numbering like "1.1 "
-        .split(' ')
-        .filter(word => word.length > 2); // Filter out short words
+    const normalizedTopic = normalize(topicTitle);
 
-      note = notes.find(noteItem => {
-        const noteTitle = noteItem.title.toLowerCase();
-        return topicKeywords.some(keyword => noteTitle.includes(keyword));
-      });
-    }
+    const note = notes.find((n) => {
+      const titleNorm = normalize(n.title);
+      const fileNorm = normalize(n.file_name);
+      return titleNorm === normalizedTopic || fileNorm === normalizedTopic;
+    });
 
     return note || null;
   };
