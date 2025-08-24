@@ -5,15 +5,6 @@ export interface Topic {
   filename: string;
 }
 
-export interface PastPaper {
-  year: number;
-  session: 'FM' | 'MJ' | 'ND';
-  paperNumber: number;
-  variant: string;
-  paperFilename: string;
-  markSchemeFilename: string;
-}
-
 export interface Subject {
   id: string;
   name: string;
@@ -23,7 +14,6 @@ export interface Subject {
   icon: string;
   asTopics: Topic[];
   aLevelTopics: Topic[];
-  pastPapers: PastPaper[];
 }
 
 export const subjects: Subject[] = [
@@ -35,42 +25,46 @@ export const subjects: Subject[] = [
     colorDark: 'subjects-mathematics-dark',
     icon: '📐',
     asTopics: [
-      { id: 'quadratics', title: 'Quadratics', summary: 'Download notes covering quadratic equations and functions.', filename: 'quadratics.pdf' },
-      { id: 'functions', title: 'Functions', summary: 'Download notes on function properties and transformations.', filename: 'functions.pdf' },
-      { id: 'coordinate-geometry', title: 'Coordinate Geometry', summary: 'Download notes on coordinate geometry fundamentals.', filename: 'coordinate-geometry.pdf' },
-      { id: 'circular-measure', title: 'Circular Measure', summary: 'Download notes on radians and arc length calculations.', filename: 'circular-measure.pdf' },
-      { id: 'trigonometry', title: 'Trigonometry', summary: 'Download notes on trigonometric functions and identities.', filename: 'trigonometry.pdf' },
-      { id: 'series', title: 'Series', summary: 'Download notes on arithmetic and geometric progressions.', filename: 'series.pdf' },
-      { id: 'differentiation', title: 'Differentiation', summary: 'Download notes on basic differentiation techniques.', filename: 'differentiation.pdf' },
-      { id: 'integration', title: 'Integration', summary: 'Download notes on basic integration methods.', filename: 'integration.pdf' },
-      { id: 'representation-of-data', title: 'Representation of Data', summary: 'Download notes on statistical data representation.', filename: 'representation-of-data.pdf' },
-      { id: 'permutations-and-combinations', title: 'Permutations and Combinations', summary: 'Download notes on combinatorics fundamentals.', filename: 'permutations-and-combinations.pdf' },
-      { id: 'probability', title: 'Probability', summary: 'Download notes on probability theory and applications.', filename: 'probability.pdf' },
-      { id: 'discrete-random-variables', title: 'Discrete Random Variables', summary: 'Download notes on discrete probability distributions.', filename: 'discrete-random-variables.pdf' },
-      { id: 'the-normal-distribution', title: 'The Normal Distribution', summary: 'Download notes on normal distribution and applications.', filename: 'the-normal-distribution.pdf' },
+      // Pure Mathematics 1 (AS)
+      { id: 'quadratics', title: '1.1 Quadratics', summary: 'Download notes covering quadratic equations and functions.', filename: 'quadratics.pdf' },
+      { id: 'functions', title: '1.2 Functions', summary: 'Download notes on function properties and transformations.', filename: 'functions.pdf' },
+      { id: 'coordinate-geometry', title: '1.3 Coordinate Geometry', summary: 'Download notes on coordinate geometry fundamentals.', filename: 'coordinate-geometry.pdf' },
+      { id: 'circular-measure', title: '1.4 Circular Measure', summary: 'Download notes on radians and arc length calculations.', filename: 'circular-measure.pdf' },
+      { id: 'trigonometry', title: '1.5 Trigonometry', summary: 'Download notes on trigonometric functions and identities.', filename: 'trigonometry.pdf' },
+      { id: 'series', title: '1.6 Series', summary: 'Download notes on arithmetic and geometric progressions.', filename: 'series.pdf' },
+      { id: 'differentiation', title: '1.7 Differentiation', summary: 'Download notes on basic differentiation techniques.', filename: 'differentiation.pdf' },
+      { id: 'integration', title: '1.8 Integration', summary: 'Download notes on basic integration methods.', filename: 'integration.pdf' },
+      // Probability & Statistics 1 (AS)
+      { id: 'representation-of-data', title: '5.1 Representation of Data', summary: 'Download notes on statistical data representation.', filename: 'representation-of-data.pdf' },
+      { id: 'permutations-and-combinations', title: '5.2 Permutations and Combinations', summary: 'Download notes on combinatorics fundamentals.', filename: 'permutations-and-combinations.pdf' },
+      { id: 'probability', title: '5.3 Probability', summary: 'Download notes on probability theory and applications.', filename: 'probability.pdf' },
+      { id: 'discrete-random-variables', title: '5.4 Discrete Random Variables', summary: 'Download notes on discrete probability distributions.', filename: 'discrete-random-variables.pdf' },
+      { id: 'normal-distribution', title: '5.5 Normal Distribution', summary: 'Download notes on normal distribution and applications.', filename: 'normal-distribution.pdf' },
     ],
     aLevelTopics: [
-      { id: 'algebra', title: 'Algebra', summary: 'Download notes on advanced algebraic techniques.', filename: 'algebra.pdf' },
-      { id: 'logarithmic-and-exponential-functions', title: 'Logarithmic and Exponential Functions', summary: 'Download notes on exponential and logarithmic functions.', filename: 'logarithmic-and-exponential-functions.pdf' },
-      { id: 'trigonometry-p2', title: 'Trigonometry (Paper 2)', summary: 'Download advanced trigonometry notes.', filename: 'trigonometry-p2.pdf' },
-      { id: 'differentiation-p2', title: 'Differentiation (Paper 2)', summary: 'Download advanced differentiation notes.', filename: 'differentiation-p2.pdf' },
-      { id: 'integration-p2', title: 'Integration (Paper 2)', summary: 'Download advanced integration notes.', filename: 'integration-p2.pdf' },
-      { id: 'numerical-solution-of-equations', title: 'Numerical Solution of Equations', summary: 'Download notes on numerical methods.', filename: 'numerical-solution-of-equations.pdf' },
-      { id: 'vectors', title: 'Vectors', summary: 'Download notes on vector algebra and geometry.', filename: 'vectors.pdf' },
-      { id: 'differential-equations', title: 'Differential Equations', summary: 'Download notes on solving differential equations.', filename: 'differential-equations.pdf' },
-      { id: 'complex-numbers', title: 'Complex Numbers', summary: 'Download notes on complex number theory.', filename: 'complex-numbers.pdf' },
-      { id: 'forces-and-equilibrium', title: 'Forces and Equilibrium', summary: 'Download notes on mechanics fundamentals.', filename: 'forces-and-equilibrium.pdf' },
-      { id: 'kinematics-of-motion-in-a-straight-line', title: 'Kinematics of Motion in a Straight Line', summary: 'Download notes on linear motion.', filename: 'kinematics-of-motion-in-a-straight-line.pdf' },
-      { id: 'momentum', title: 'Momentum', summary: 'Download notes on momentum and collisions.', filename: 'momentum.pdf' },
-      { id: 'newtons-laws-of-motion', title: "Newton's Laws of Motion", summary: 'Download notes on Newton\'s laws and applications.', filename: 'newtons-laws-of-motion.pdf' },
-      { id: 'energy-work-and-power', title: 'Energy, Work and Power', summary: 'Download notes on energy concepts in mechanics.', filename: 'energy-work-and-power.pdf' },
-      { id: 'poisson-distribution', title: 'The Poisson Distribution', summary: 'Download notes on Poisson distribution.', filename: 'poisson-distribution.pdf' },
-      { id: 'linear-combinations-of-random-variables', title: 'Linear Combinations of Random Variables', summary: 'Download notes on combining random variables.', filename: 'linear-combinations-of-random-variables.pdf' },
-      { id: 'continuous-random-variables', title: 'Continuous Random Variables', summary: 'Download notes on continuous probability distributions.', filename: 'continuous-random-variables.pdf' },
-      { id: 'sampling-and-estimation', title: 'Sampling and Estimation', summary: 'Download notes on statistical sampling methods.', filename: 'sampling-and-estimation.pdf' },
-      { id: 'hypothesis-tests', title: 'Hypothesis Tests', summary: 'Download notes on statistical hypothesis testing.', filename: 'hypothesis-tests.pdf' },
+      // Pure Mathematics 3 (A2)
+      { id: 'algebra', title: '3.1 Algebra', summary: 'Download notes on advanced algebraic techniques.', filename: 'algebra.pdf' },
+      { id: 'logarithmic-and-exponential-functions', title: '3.2 Logarithmic and Exponential Functions', summary: 'Download notes on exponential and logarithmic functions.', filename: 'logarithmic-and-exponential-functions.pdf' },
+      { id: 'trigonometry-advanced', title: '3.3 Trigonometry (Advanced)', summary: 'Download advanced trigonometry notes.', filename: 'trigonometry-advanced.pdf' },
+      { id: 'differentiation-advanced', title: '3.4 Differentiation (Advanced)', summary: 'Download advanced differentiation notes.', filename: 'differentiation-advanced.pdf' },
+      { id: 'integration-advanced', title: '3.5 Integration (Advanced)', summary: 'Download advanced integration notes.', filename: 'integration-advanced.pdf' },
+      { id: 'numerical-solution-of-equations', title: '3.6 Numerical Solution of Equations', summary: 'Download notes on numerical methods.', filename: 'numerical-solution-of-equations.pdf' },
+      { id: 'vectors', title: '3.7 Vectors', summary: 'Download notes on vector algebra and geometry.', filename: 'vectors.pdf' },
+      { id: 'differential-equations', title: '3.8 Differential Equations', summary: 'Download notes on solving differential equations.', filename: 'differential-equations.pdf' },
+      { id: 'complex-numbers', title: '3.9 Complex Numbers', summary: 'Download notes on complex number theory.', filename: 'complex-numbers.pdf' },
+      // Mechanics (A2)
+      { id: 'forces-and-equilibrium', title: '4.1 Forces and Equilibrium', summary: 'Download notes on mechanics fundamentals.', filename: 'forces-and-equilibrium.pdf' },
+      { id: 'kinematics-of-motion-in-a-straight-line', title: '4.2 Kinematics of Motion in a Straight Line', summary: 'Download notes on linear motion.', filename: 'kinematics-of-motion-in-a-straight-line.pdf' },
+      { id: 'momentum', title: '4.3 Momentum', summary: 'Download notes on momentum and collisions.', filename: 'momentum.pdf' },
+      { id: 'newtons-laws-of-motion', title: "4.4 Newton's Laws of Motion", summary: 'Download notes on Newton\'s laws and applications.', filename: 'newtons-laws-of-motion.pdf' },
+      { id: 'energy-work-and-power', title: '4.5 Energy, Work, and Power', summary: 'Download notes on energy concepts in mechanics.', filename: 'energy-work-and-power.pdf' },
+      // Probability & Statistics 2 (A2)
+      { id: 'poisson-distribution', title: '6.1 Poisson Distribution', summary: 'Download notes on Poisson distribution.', filename: 'poisson-distribution.pdf' },
+      { id: 'linear-combinations-of-random-variables', title: '6.2 Linear Combinations of Random Variables', summary: 'Download notes on combining random variables.', filename: 'linear-combinations-of-random-variables.pdf' },
+      { id: 'continuous-random-variables', title: '6.3 Continuous Random Variables', summary: 'Download notes on continuous probability distributions.', filename: 'continuous-random-variables.pdf' },
+      { id: 'sampling-and-estimation', title: '6.4 Sampling and Estimation', summary: 'Download notes on statistical sampling methods.', filename: 'sampling-and-estimation.pdf' },
+      { id: 'hypothesis-tests', title: '6.5 Hypothesis Tests', summary: 'Download notes on statistical hypothesis testing.', filename: 'hypothesis-tests.pdf' },
     ],
-    pastPapers: generatePastPapers('9709', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63]),
   },
   {
     id: 'further-mathematics',
@@ -80,34 +74,37 @@ export const subjects: Subject[] = [
     colorDark: 'subjects-further-math-dark',
     icon: '🧮',
     asTopics: [
-      { id: 'roots-of-polynomial-equations', title: 'Roots of Polynomial Equations', summary: 'Download notes on polynomial roots and equations.', filename: 'roots-of-polynomial-equations.pdf' },
-      { id: 'rational-functions-and-graphs', title: 'Rational Functions and Graphs', summary: 'Download notes on rational functions.', filename: 'rational-functions-and-graphs.pdf' },
-      { id: 'summation-of-series', title: 'Summation of Series', summary: 'Download notes on series summation techniques.', filename: 'summation-of-series.pdf' },
-      { id: 'matrices', title: 'Matrices', summary: 'Download notes on matrix operations and applications.', filename: 'matrices.pdf' },
-      { id: 'polar-coordinates', title: 'Polar Coordinates', summary: 'Download notes on polar coordinate systems.', filename: 'polar-coordinates.pdf' },
-      { id: 'vectors-fp', title: 'Vectors', summary: 'Download notes on vector analysis.', filename: 'vectors-fp.pdf' },
-      { id: 'proof-by-induction', title: 'Proof by Induction', summary: 'Download notes on mathematical induction.', filename: 'proof-by-induction.pdf' },
+      // Further Pure Mathematics 1 (AS)
+      { id: 'roots-of-polynomial-equations', title: '1.1 Roots of Polynomial Equations', summary: 'Download notes on polynomial roots and equations.', filename: 'roots-of-polynomial-equations.pdf' },
+      { id: 'rational-functions-and-graphs', title: '1.2 Rational Functions and Graphs', summary: 'Download notes on rational functions.', filename: 'rational-functions-and-graphs.pdf' },
+      { id: 'summation-of-series', title: '1.3 Summation of Series', summary: 'Download notes on series summation techniques.', filename: 'summation-of-series.pdf' },
+      { id: 'matrices', title: '1.4 Matrices', summary: 'Download notes on matrix operations and applications.', filename: 'matrices.pdf' },
+      { id: 'polar-coordinates', title: '1.5 Polar Coordinates', summary: 'Download notes on polar coordinate systems.', filename: 'polar-coordinates.pdf' },
+      { id: 'vectors-fp', title: '1.6 Vectors', summary: 'Download notes on vector analysis.', filename: 'vectors-fp.pdf' },
+      { id: 'proof-by-induction', title: '1.7 Proof by Induction', summary: 'Download notes on mathematical induction.', filename: 'proof-by-induction.pdf' },
     ],
     aLevelTopics: [
-      { id: 'hyperbolic-functions', title: 'Hyperbolic Functions', summary: 'Download notes on hyperbolic trigonometric functions.', filename: 'hyperbolic-functions.pdf' },
-      { id: 'matrices-fp2', title: 'Matrices (Advanced)', summary: 'Download advanced matrix theory notes.', filename: 'matrices-fp2.pdf' },
-      { id: 'differentiation-fp2', title: 'Differentiation (Advanced)', summary: 'Download advanced differentiation techniques.', filename: 'differentiation-fp2.pdf' },
-      { id: 'integration-fp2', title: 'Integration (Advanced)', summary: 'Download advanced integration methods.', filename: 'integration-fp2.pdf' },
-      { id: 'complex-numbers-fp2', title: 'Complex Numbers (Advanced)', summary: 'Download advanced complex number theory.', filename: 'complex-numbers-fp2.pdf' },
-      { id: 'differential-equations-fp2', title: 'Differential Equations (Advanced)', summary: 'Download advanced differential equations.', filename: 'differential-equations-fp2.pdf' },
-      { id: 'motion-of-a-projectile', title: 'Motion of a Projectile', summary: 'Download notes on projectile motion.', filename: 'motion-of-a-projectile.pdf' },
-      { id: 'equilibrium-of-a-rigid-body', title: 'Equilibrium of a Rigid Body', summary: 'Download notes on rigid body equilibrium.', filename: 'equilibrium-of-a-rigid-body.pdf' },
-      { id: 'circular-motion', title: 'Circular Motion', summary: 'Download notes on circular motion dynamics.', filename: 'circular-motion.pdf' },
-      { id: 'hookes-law', title: "Hooke's Law", summary: 'Download notes on elastic forces and springs.', filename: 'hookes-law.pdf' },
-      { id: 'linear-motion-under-a-variable-force', title: 'Linear Motion Under a Variable Force', summary: 'Download notes on variable force motion.', filename: 'linear-motion-under-a-variable-force.pdf' },
-      { id: 'momentum-fm', title: 'Momentum (Further)', summary: 'Download advanced momentum concepts.', filename: 'momentum-fm.pdf' },
-      { id: 'continuous-random-variables-fps', title: 'Continuous Random Variables', summary: 'Download advanced probability theory.', filename: 'continuous-random-variables-fps.pdf' },
-      { id: 'inference-using-normal-and-t-distributions', title: 'Inference using Normal and t-distributions', summary: 'Download statistical inference notes.', filename: 'inference-using-normal-and-t-distributions.pdf' },
-      { id: 'chi-squared-tests', title: 'Chi-squared Tests', summary: 'Download chi-squared test methodology.', filename: 'chi-squared-tests.pdf' },
-      { id: 'non-parametric-tests', title: 'Non-parametric Tests', summary: 'Download non-parametric statistics notes.', filename: 'non-parametric-tests.pdf' },
-      { id: 'probability-generating-functions', title: 'Probability Generating Functions', summary: 'Download probability generating functions theory.', filename: 'probability-generating-functions.pdf' },
+      // Further Pure Mathematics 2 (A2)
+      { id: 'hyperbolic-functions', title: '2.1 Hyperbolic Functions', summary: 'Download notes on hyperbolic trigonometric functions.', filename: 'hyperbolic-functions.pdf' },
+      { id: 'matrices-advanced', title: '2.2 Matrices (Advanced)', summary: 'Download advanced matrix theory notes.', filename: 'matrices-advanced.pdf' },
+      { id: 'differentiation-fp2', title: '2.3 Differentiation', summary: 'Download advanced differentiation techniques.', filename: 'differentiation-fp2.pdf' },
+      { id: 'integration-fp2', title: '2.4 Integration', summary: 'Download advanced integration methods.', filename: 'integration-fp2.pdf' },
+      { id: 'complex-numbers-fp2', title: '2.5 Complex Numbers', summary: 'Download advanced complex number theory.', filename: 'complex-numbers-fp2.pdf' },
+      { id: 'differential-equations-fp2', title: '2.6 Differential Equations', summary: 'Download advanced differential equations.', filename: 'differential-equations-fp2.pdf' },
+      // Further Mechanics (A2)
+      { id: 'motion-of-a-projectile', title: '3.1 Motion of a Projectile', summary: 'Download notes on projectile motion.', filename: 'motion-of-a-projectile.pdf' },
+      { id: 'equilibrium-of-a-rigid-body', title: '3.2 Equilibrium of a Rigid Body', summary: 'Download notes on rigid body equilibrium.', filename: 'equilibrium-of-a-rigid-body.pdf' },
+      { id: 'circular-motion', title: '3.3 Circular Motion', summary: 'Download notes on circular motion dynamics.', filename: 'circular-motion.pdf' },
+      { id: 'hookes-law', title: "3.4 Hooke's Law", summary: 'Download notes on elastic forces and springs.', filename: 'hookes-law.pdf' },
+      { id: 'linear-motion-under-a-variable-force', title: '3.5 Linear Motion under a Variable Force', summary: 'Download notes on variable force motion.', filename: 'linear-motion-under-a-variable-force.pdf' },
+      { id: 'momentum-fm', title: '3.6 Momentum', summary: 'Download advanced momentum concepts.', filename: 'momentum-fm.pdf' },
+      // Further Probability & Statistics (A2)
+      { id: 'continuous-random-variables-fps', title: '4.1 Continuous Random Variables', summary: 'Download advanced probability theory.', filename: 'continuous-random-variables-fps.pdf' },
+      { id: 'inference-using-normal-and-t-distributions', title: '4.2 Inference Using Normal and t-Distributions', summary: 'Download statistical inference notes.', filename: 'inference-using-normal-and-t-distributions.pdf' },
+      { id: 'chi-squared-tests', title: '4.3 Chi-Squared Tests', summary: 'Download chi-squared test methodology.', filename: 'chi-squared-tests.pdf' },
+      { id: 'non-parametric-tests', title: '4.4 Non-Parametric Tests', summary: 'Download non-parametric statistics notes.', filename: 'non-parametric-tests.pdf' },
+      { id: 'probability-generating-functions', title: '4.5 Probability Generating Functions', summary: 'Download probability generating functions theory.', filename: 'probability-generating-functions.pdf' },
     ],
-    pastPapers: generatePastPapers('9231', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43]),
   },
   {
     id: 'physics',
@@ -145,7 +142,6 @@ export const subjects: Subject[] = [
       { id: 'medical-physics', title: 'Medical Physics', summary: 'Download notes on physics applications in medicine.', filename: 'medical-physics.pdf' },
       { id: 'astronomy-and-cosmology', title: 'Astronomy and Cosmology', summary: 'Download notes on space physics and the universe.', filename: 'astronomy-and-cosmology.pdf' },
     ],
-    pastPapers: generatePastPapers('9702', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43, 51, 52, 53]),
   },
   {
     id: 'chemistry',
@@ -195,7 +191,6 @@ export const subjects: Subject[] = [
       { id: 'organic-synthesis-a2', title: 'Organic Synthesis', summary: 'Download advanced synthetic chemistry notes.', filename: 'organic-synthesis-a2.pdf' },
       { id: 'analytical-techniques-a2', title: 'Analytical Techniques', summary: 'Download advanced analytical chemistry techniques.', filename: 'analytical-techniques-a2.pdf' },
     ],
-    pastPapers: generatePastPapers('9701', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43, 51, 52, 53]),
   },
   {
     id: 'biology',
@@ -227,7 +222,6 @@ export const subjects: Subject[] = [
       { id: 'classification-biodiversity-and-conservation', title: 'Classification, Biodiversity and Conservation', summary: 'Download notes on taxonomy and conservation.', filename: 'classification-biodiversity-and-conservation.pdf' },
       { id: 'genetic-technology', title: 'Genetic Technology', summary: 'Download notes on biotechnology and genetic engineering.', filename: 'genetic-technology.pdf' },
     ],
-    pastPapers: generatePastPapers('9700', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43, 51, 52, 53]),
   },
   {
     id: 'economics',
@@ -260,40 +254,18 @@ export const subjects: Subject[] = [
       { id: 'govt-macroeconomic-policy-objectives', title: '5.1 Government Macroeconomic Policy Objectives', summary: 'Download notes on policy goals and trade-offs.', filename: 'govt-macroeconomic-policy-objectives.pdf' },
       { id: 'fiscal-policy', title: '5.2 Fiscal Policy', summary: 'Download notes on government spending and taxation.', filename: 'fiscal-policy.pdf' },
       { id: 'monetary-policy', title: '5.3 Monetary Policy', summary: 'Download notes on central bank policies and interest rates.', filename: 'monetary-policy.pdf' },
-      { id: 'supply-side-policy', title: '5.4 Supply-side Policy', summary: 'Download notes on policies to increase productivity.', filename: 'supply-side-policy.pdf' },
-      { id: 'reasons-for-international-trade', title: '6.1 The Reasons for International Trade', summary: 'Download notes on trade theory and comparative advantage.', filename: 'reasons-for-international-trade.pdf' },
-      { id: 'protectionism', title: '6.2 Protectionism', summary: 'Download notes on trade barriers and their effects.', filename: 'protectionism.pdf' },
-      { id: 'current-account', title: '6.3 Current Account of the Balance of Payments', summary: 'Download notes on international payment flows.', filename: 'current-account.pdf' },
-      { id: 'exchange-rates', title: '6.4 Exchange Rates', summary: 'Download notes on currency markets and determination.', filename: 'exchange-rates.pdf' },
-      { id: 'policies-to-correct-current-account-imbalances', title: '6.5 Policies to Correct Imbalances in the Current Account', summary: 'Download notes on balance of payments correction.', filename: 'policies-to-correct-current-account-imbalances.pdf' },
+      { id: 'supply-side-policies', title: '5.4 Supply-side Policies', summary: 'Download notes on structural economic reforms.', filename: 'supply-side-policies.pdf' },
     ],
     aLevelTopics: [
-      { id: 'utility', title: '7.1 Utility', summary: 'Download notes on consumer choice theory and utility maximization.', filename: 'utility.pdf' },
-      { id: 'indifference-curves-budget-lines', title: '7.2 Indifference Curves and Budget Lines', summary: 'Download notes on graphical analysis of consumer behavior.', filename: 'indifference-curves-budget-lines.pdf' },
-      { id: 'efficiency-market-failure', title: '7.3 Efficiency and Market Failure', summary: 'Download notes on allocative and productive efficiency.', filename: 'efficiency-market-failure.pdf' },
-      { id: 'private-external-social-costs-benefits', title: '7.4 Private Costs/Benefits, Externalities, Social Costs/Benefits', summary: 'Download notes on externalities and social welfare.', filename: 'private-external-social-costs-benefits.pdf' },
-      { id: 'types-of-cost-revenue-profit', title: '7.5 Types of Cost, Revenue and Profit', summary: 'Download notes on firm costs and profit analysis.', filename: 'types-of-cost-revenue-profit.pdf' },
-      { id: 'different-market-structures', title: '7.6 Different Market Structures', summary: 'Download notes on perfect competition, monopoly, and oligopoly.', filename: 'different-market-structures.pdf' },
-      { id: 'growth-survival-of-firms', title: '7.7 Growth and Survival of Firms', summary: 'Download notes on firm expansion strategies.', filename: 'growth-survival-of-firms.pdf' },
-      { id: 'differing-objectives-policies-of-firms', title: '7.8 Differing Objectives and Policies of Firms', summary: 'Download notes on firm behavior and objectives.', filename: 'differing-objectives-policies-of-firms.pdf' },
-      { id: 'govt-policies-resource-allocation', title: '8.1 Government Policies for Resource Allocation and Market Failure', summary: 'Download notes on microeconomic policy tools.', filename: 'govt-policies-resource-allocation.pdf' },
-      { id: 'equity-redistribution', title: '8.2 Equity and Redistribution of Income and Wealth', summary: 'Download notes on inequality and redistribution policies.', filename: 'equity-redistribution.pdf' },
-      { id: 'labour-market-govt-intervention', title: '8.3 Labour Market Forces and Government Intervention', summary: 'Download notes on labor economics and wage determination.', filename: 'labour-market-govt-intervention.pdf' },
-      { id: 'circular-flow-of-income-a2', title: '9.1 The Circular Flow of Income', summary: 'Download advanced notes on economic flow analysis.', filename: 'circular-flow-of-income-a2.pdf' },
-      { id: 'economic-growth-sustainability', title: '9.2 Economic Growth and Sustainability', summary: 'Download notes on sustainable development and growth.', filename: 'economic-growth-sustainability.pdf' },
-      { id: 'employment-unemployment', title: '9.3 Employment/Unemployment', summary: 'Download advanced notes on labor market analysis.', filename: 'employment-unemployment.pdf' },
-      { id: 'money-and-banking', title: '9.4 Money and Banking', summary: 'Download notes on monetary system and banking.', filename: 'money-and-banking.pdf' },
-      { id: 'govt-macroeconomic-objectives-a2', title: '10.1 Government Macroeconomic Policy Objectives', summary: 'Download advanced policy analysis notes.', filename: 'govt-macroeconomic-objectives-a2.pdf' },
-      { id: 'links-between-macroeconomic-problems', title: '10.2 Links Between Macroeconomic Problems', summary: 'Download notes on policy conflicts and trade-offs.', filename: 'links-between-macroeconomic-problems.pdf' },
-      { id: 'effectiveness-of-policy-options', title: '10.3 Effectiveness of Policy Options', summary: 'Download notes on policy evaluation and effectiveness.', filename: 'effectiveness-of-policy-options.pdf' },
-      { id: 'policies-to-correct-disequilibrium', title: '11.1 Policies to Correct Disequilibrium in Balance of Payments', summary: 'Download notes on external balance correction.', filename: 'policies-to-correct-disequilibrium.pdf' },
-      { id: 'exchange-rates-a2', title: '11.2 Exchange Rates', summary: 'Download advanced notes on exchange rate systems.', filename: 'exchange-rates-a2.pdf' },
-      { id: 'economic-development', title: '11.3 Economic Development', summary: 'Download notes on development economics theory.', filename: 'economic-development.pdf' },
-      { id: 'characteristics-of-countries', title: '11.4 Characteristics of Countries at Different Development Levels', summary: 'Download notes on development indicators and stages.', filename: 'characteristics-of-countries.pdf' },
-      { id: 'relationship-between-countries', title: '11.5 Relationship Between Countries at Different Development Levels', summary: 'Download notes on North-South economic relations.', filename: 'relationship-between-countries.pdf' },
-      { id: 'globalisation', title: '11.6 Globalisation', summary: 'Download notes on global economic integration.', filename: 'globalisation.pdf' },
+      { id: 'efficiency-and-market-failure', title: '6.1 Efficiency and Market Failure', summary: 'Download notes on economic efficiency and market failures.', filename: 'efficiency-and-market-failure.pdf' },
+      { id: 'private-costs-benefits-externalities', title: '6.2 Private Costs and Benefits, External Costs and Benefits and Social Costs and Benefits', summary: 'Download notes on externalities and social welfare.', filename: 'private-costs-benefits-externalities.pdf' },
+      { id: 'types-of-cost-revenue-profit', title: '7.1 Types of Cost, Revenue and Profit, Short-run and Long-run Production', summary: 'Download notes on production economics.', filename: 'types-of-cost-revenue-profit.pdf' },
+      { id: 'different-market-structures', title: '7.2 Different Market Structures', summary: 'Download notes on perfect competition, monopoly, and oligopoly.', filename: 'different-market-structures.pdf' },
+      { id: 'growth-survival-of-firms', title: '7.3 Growth and Survival of Firms', summary: 'Download notes on business growth strategies.', filename: 'growth-survival-of-firms.pdf' },
+      { id: 'differing-objectives-of-a-firm', title: '7.4 Differing Objectives of a Firm', summary: 'Download notes on profit maximization and alternative objectives.', filename: 'differing-objectives-of-a-firm.pdf' },
+      { id: 'demand-for-factors-of-production', title: '8.1 Demand for Factors of Production', summary: 'Download notes on factor markets and wage determination.', filename: 'demand-for-factors-of-production.pdf' },
+      { id: 'reasons-for-different-factor-rewards', title: '8.2 Reasons for Different Factor Rewards and Income and Wealth Distribution Within an Economy', summary: 'Download notes on income inequality and distribution.', filename: 'reasons-for-different-factor-rewards.pdf' },
     ],
-    pastPapers: generatePastPapers('9708', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43]),
   },
   {
     id: 'computer-science',
@@ -303,54 +275,34 @@ export const subjects: Subject[] = [
     colorDark: 'subjects-computer-science-dark',
     icon: '💻',
     asTopics: [
-      { id: 'data-representation', title: '1.1 Data Representation', summary: 'Download notes for this topic.', filename: 'data-representation.pdf' },
-      { id: 'multimedia-graphics-sound', title: '1.2 Multimedia – Graphics, Sound', summary: 'Download notes for this topic.', filename: 'multimedia-graphics-sound.pdf' },
-      { id: 'compression', title: '1.3 Compression', summary: 'Download notes for this topic.', filename: 'compression.pdf' },
-      { id: 'networks-internet', title: '2.1 Networks including the internet', summary: 'Download notes for this topic.', filename: 'networks-internet.pdf' },
-      { id: 'computers-components', title: '3.1 Computers and their components', summary: 'Download notes for this topic.', filename: 'computers-components.pdf' },
-      { id: 'logic-gates-circuits', title: '3.2 Logic Gates and Logic Circuits', summary: 'Download notes for this topic.', filename: 'logic-gates-circuits.pdf' },
-      { id: 'cpu-architecture', title: '4.1 Central Processing Unit (CPU) Architecture', summary: 'Download notes for this topic.', filename: 'cpu-architecture.pdf' },
-      { id: 'assembly-language', title: '4.2 Assembly Language', summary: 'Download notes for this topic.', filename: 'assembly-language.pdf' },
-      { id: 'bit-manipulation', title: '4.3 Bit manipulation', summary: 'Download notes for this topic.', filename: 'bit-manipulation.pdf' },
-      { id: 'operating-systems', title: '5.1 Operating Systems', summary: 'Download notes for this topic.', filename: 'operating-systems.pdf' },
-      { id: 'language-translators', title: '5.2 Language Translators', summary: 'Download notes for this topic.', filename: 'language-translators.pdf' },
-      { id: 'data-security', title: '6.1 Data Security', summary: 'Download notes for this topic.', filename: 'data-security.pdf' },
-      { id: 'data-integrity', title: '6.2 Data Integrity', summary: 'Download notes for this topic.', filename: 'data-integrity.pdf' },
-      { id: 'ethics-ownership', title: '7.1 Ethics and Ownership', summary: 'Download notes for this topic.', filename: 'ethics-ownership.pdf' },
-      { id: 'database-concepts', title: '8.1 Database Concepts', summary: 'Download notes for this topic.', filename: 'database-concepts.pdf' },
-      { id: 'dbms', title: '8.2 Database Management Systems (DBMS)', summary: 'Download notes for this topic.', filename: 'dbms.pdf' },
-      { id: 'ddl-dml', title: '8.3 Data Definition Language (DDL) and Data Manipulation Language (DML)', summary: 'Download notes for this topic.', filename: 'ddl-dml.pdf' },
-      { id: 'computational-thinking-skills', title: '9.1 Computational Thinking Skills', summary: 'Download notes for this topic.', filename: 'computational-thinking-skills.pdf' },
-      { id: 'algorithms', title: '9.2 Algorithms', summary: 'Download notes for this topic.', filename: 'algorithms.pdf' },
-      { id: 'data-types-records', title: '10.1 Data Types and Records', summary: 'Download notes for this topic.', filename: 'data-types-records.pdf' },
-      { id: 'arrays', title: '10.2 Arrays', summary: 'Download notes for this topic.', filename: 'arrays.pdf' },
-      { id: 'files', title: '10.3 Files', summary: 'Download notes for this topic.', filename: 'files.pdf' },
-      { id: 'introduction-adt', title: '10.4 Introduction to Abstract Data Types (ADT)', summary: 'Download notes for this topic.', filename: 'introduction-adt.pdf' },
-      { id: 'programming-basics', title: '11.1 Programming Basics', summary: 'Download notes for this topic.', filename: 'programming-basics.pdf' },
-      { id: 'constructs', title: '11.2 Constructs', summary: 'Download notes for this topic.', filename: 'constructs.pdf' },
-      { id: 'structured-programming', title: '11.3 Structured Programming', summary: 'Download notes for this topic.', filename: 'structured-programming.pdf' },
-      { id: 'program-development-life-cycle', title: '12.1 Program Development Life Cycle', summary: 'Download notes for this topic.', filename: 'program-development-life-cycle.pdf' },
-      { id: 'program-design', title: '12.2 Program Design', summary: 'Download notes for this topic.', filename: 'program-design.pdf' },
-      { id: 'program-testing-maintenance', title: '12.3 Program Testing and Maintenance', summary: 'Download notes for this topic.', filename: 'program-testing-maintenance.pdf' },
+      { id: 'information-representation', title: '1.1 Information representation', summary: 'Download notes for this topic.', filename: 'information-representation.pdf' },
+      { id: 'communication', title: '1.2 Communication', summary: 'Download notes for this topic.', filename: 'communication.pdf' },
+      { id: 'hardware', title: '1.3 Hardware', summary: 'Download notes for this topic.', filename: 'hardware.pdf' },
+      { id: 'processor-fundamentals', title: '1.4 Processor fundamentals', summary: 'Download notes for this topic.', filename: 'processor-fundamentals.pdf' },
+      { id: 'system-software', title: '1.5 System software', summary: 'Download notes for this topic.', filename: 'system-software.pdf' },
+      { id: 'security-ethics', title: '1.6 Security, privacy and data integrity', summary: 'Download notes for this topic.', filename: 'security-ethics.pdf' },
+      { id: 'ethics-ownership', title: '1.7 Ethics and Ownership', summary: 'Download notes for this topic.', filename: 'ethics-ownership.pdf' },
+      { id: 'databases', title: '1.8 Databases', summary: 'Download notes for this topic.', filename: 'databases.pdf' },
+      { id: 'algorithm-design-problem-solving', title: '2.1 Algorithm design and problem-solving', summary: 'Download notes for this topic.', filename: 'algorithm-design-problem-solving.pdf' },
+      { id: 'data-representation', title: '2.2 Data representation', summary: 'Download notes for this topic.', filename: 'data-representation.pdf' },
+      { id: 'programming', title: '2.3 Programming', summary: 'Download notes for this topic.', filename: 'programming.pdf' },
+      { id: 'software-development', title: '2.4 Software development', summary: 'Download notes for this topic.', filename: 'software-development.pdf' },
     ],
     aLevelTopics: [
-      { id: 'user-defined-data-types', title: '13.1 User-defined data types', summary: 'Download notes for this topic.', filename: 'user-defined-data-types.pdf' },
-      { id: 'file-organisation-access', title: '13.2 File organisation and access', summary: 'Download notes for this topic.', filename: 'file-organisation-access.pdf' },
-      { id: 'floating-point-numbers', title: '13.3 Floating-point numbers', summary: 'Download notes for this topic.', filename: 'floating-point-numbers.pdf' },
-      { id: 'protocols', title: '14.1 Protocols', summary: 'Download notes for this topic.', filename: 'protocols.pdf' },
-      { id: 'circuit-packet-switching', title: '14.2 Circuit switching, packet switching', summary: 'Download notes for this topic.', filename: 'circuit-packet-switching.pdf' },
-      { id: 'processors-parallel-vms', title: '15.1 Processors, Parallel Processing and Virtual Machines', summary: 'Download notes for this topic.', filename: 'processors-parallel-vms.pdf' },
-      { id: 'boolean-algebra-logic-circuits', title: '15.2 Boolean Algebra and Logic Circuits', summary: 'Download notes for this topic.', filename: 'boolean-algebra-logic-circuits.pdf' },
-      { id: 'purposes-of-os', title: '16.1 Purposes of an Operating System', summary: 'Download notes for this topic.', filename: 'purposes-of-os.pdf' },
-      { id: 'translation-software', title: '16.2 Translation Software', summary: 'Download notes for this topic.', filename: 'translation-software.pdf' },
-      { id: 'encryption-protocols-certificates', title: '17.1 Encryption, Protocols, Digital Certificates', summary: 'Download notes for this topic.', filename: 'encryption-protocols-certificates.pdf' },
-      { id: 'artificial-intelligence', title: '18.1 Artificial Intelligence', summary: 'Download notes for this topic.', filename: 'artificial-intelligence.pdf' },
-      { id: 'algorithms-a2', title: '19.1 Algorithms', summary: 'Download notes for this topic.', filename: 'algorithms-a2.pdf' },
-      { id: 'recursion', title: '19.2 Recursion', summary: 'Download notes for this topic.', filename: 'recursion.pdf' },
-      { id: 'programming-paradigms', title: '20.1 Programming Paradigms', summary: 'Download notes for this topic.', filename: 'programming-paradigms.pdf' },
-      { id: 'file-processing-exception-handling', title: '20.2 File Processing and Exception Handling', summary: 'Download notes for this topic.', filename: 'file-processing-exception-handling.pdf' },
+      { id: 'data-representation-a2', title: '3.1 Data representation', summary: 'Download notes for this topic.', filename: 'data-representation-a2.pdf' },
+      { id: 'communication-internet-technologies', title: '3.2 Communication and Internet technologies', summary: 'Download notes for this topic.', filename: 'communication-internet-technologies.pdf' },
+      { id: 'hardware-virtual-machines', title: '3.3 Hardware and virtual machines', summary: 'Download notes for this topic.', filename: 'hardware-virtual-machines.pdf' },
+      { id: 'system-software-a2', title: '3.4 System software', summary: 'Download notes for this topic.', filename: 'system-software-a2.pdf' },
+      { id: 'security-a2', title: '3.5 Security', summary: 'Download notes for this topic.', filename: 'security-a2.pdf' },
+      { id: 'monitoring-control-systems', title: '3.6 Monitoring and control systems', summary: 'Download notes for this topic.', filename: 'monitoring-control-systems.pdf' },
+      { id: 'artificial-intelligence', title: '3.7 Artificial intelligence', summary: 'Download notes for this topic.', filename: 'artificial-intelligence.pdf' },
+      { id: 'computational-thinking-problem-solving', title: '4.1 Computational thinking and problem-solving', summary: 'Download notes for this topic.', filename: 'computational-thinking-problem-solving.pdf' },
+      { id: 'algorithms-on-graphs', title: '4.2 Algorithms on graphs', summary: 'Download notes for this topic.', filename: 'algorithms-on-graphs.pdf' },
+      { id: 'a-star-algorithm', title: '4.3 A* algorithm', summary: 'Download notes for this topic.', filename: 'a-star-algorithm.pdf' },
+      { id: 'algorithms-on-2d-arrays', title: '4.4 Algorithms on 2D arrays', summary: 'Download notes for this topic.', filename: 'algorithms-on-2d-arrays.pdf' },
+      { id: 'programming-a2', title: '4.5 Programming', summary: 'Download notes for this topic.', filename: 'programming-a2.pdf' },
+      { id: 'object-oriented-programming', title: '4.6 Object-oriented programming (OOP)', summary: 'Download notes for this topic.', filename: 'object-oriented-programming.pdf' },
     ],
-    pastPapers: generatePastPapers('9618', [11, 12, 13, 21, 22, 23, 31, 32, 33, 41, 42, 43]),
   },
   {
     id: 'sociology',
@@ -367,7 +319,6 @@ export const subjects: Subject[] = [
       { id: 'education', title: 'P3 – Education', summary: 'Download notes for this topic.', filename: 'education.pdf' },
       { id: 'globalisation-media-religion', title: 'P4 – Globalisation, Media and Religion', summary: 'Download notes for this topic.', filename: 'globalisation-media-religion.pdf' },
     ],
-    pastPapers: generatePastPapers('9699', [11, 12, 13, 21, 22, 23, 31, 32, 33]),
   },
   {
     id: 'psychology',
@@ -384,7 +335,6 @@ export const subjects: Subject[] = [
       { id: 'specialist-options', title: 'P3 – Specialist Options (Abnormality, Consumer Behaviour, Health Psychology, Organisational Psychology)', summary: 'Download notes for this topic.', filename: 'specialist-options.pdf' },
       { id: 'application-of-research-methods', title: 'P4 – Application of Research Methods to Specialist Options', summary: 'Download notes for this topic.', filename: 'application-of-research-methods.pdf' },
     ],
-    pastPapers: generatePastPapers('9990', [11, 12, 13, 21, 22, 23, 31, 32, 33]),
   },
   {
     id: 'accounting',
@@ -414,7 +364,6 @@ export const subjects: Subject[] = [
       { id: 'budgeting-budgetary-control', title: '4.3 Budgeting and budgetary control', summary: 'Download notes for this topic.', filename: 'budgeting-budgetary-control.pdf' },
       { id: 'investment-appraisal', title: '4.4 Investment appraisal', summary: 'Download notes for this topic.', filename: 'investment-appraisal.pdf' },
     ],
-    pastPapers: generatePastPapers('9706', [11, 12, 13, 21, 22, 23, 31, 32, 33]),
   },
   {
     id: 'business-studies',
@@ -461,36 +410,5 @@ export const subjects: Subject[] = [
       { id: 'investment-appraisal-a2', title: '10.3 Investment appraisal', summary: 'Download notes for this topic.', filename: 'investment-appraisal-a2.pdf' },
       { id: 'finance-accounting-strategy', title: '10.4 Finance and accounting strategy', summary: 'Download notes for this topic.', filename: 'finance-accounting-strategy.pdf' },
     ],
-    pastPapers: generatePastPapers('9609', [11, 12, 13, 21, 22, 23, 31, 32, 33]),
   },
 ];
-
-function generatePastPapers(code: string, variants: number[]): PastPaper[] {
-  const papers: PastPaper[] = [];
-  const sessions: ('FM' | 'MJ' | 'ND')[] = ['FM', 'MJ', 'ND'];
-  
-  // Generate papers for years 2020-2025 with comprehensive coverage
-  for (let year = 2020; year <= 2025; year++) {
-    for (const session of sessions) {
-      for (const variant of variants) {
-        const paperNumber = Math.floor(variant / 10);
-        const variantStr = variant.toString();
-        
-        // Convert session codes to match CIE format: FM=m, MJ=s, ND=w
-        const sessionCode = session === 'FM' ? 'm' : session === 'MJ' ? 's' : 'w';
-        const yearCode = year.toString().slice(-2); // Get last 2 digits of year
-        
-        papers.push({
-          year,
-          session,
-          paperNumber,
-          variant: variantStr,
-          paperFilename: `${code}_${variantStr}_${sessionCode}${yearCode}-paper.pdf`,
-          markSchemeFilename: `${code}_${variantStr}_${sessionCode}${yearCode}-ms.pdf`,
-        });
-      }
-    }
-  }
-  
-  return papers;
-}
