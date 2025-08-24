@@ -34,7 +34,7 @@ export function useSubjectNotes(subjectCode: string) {
           '9702': 'Physics',
           '9990': 'Psychology',
           '9699': 'Sociology',
-          '7115': 'Business studies'
+          '9609': 'Business studies'
         };
 
         const folderName = folderMap[subjectCode];

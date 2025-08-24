@@ -255,6 +255,11 @@ export const subjects: Subject[] = [
       { id: 'fiscal-policy', title: '5.2 Fiscal Policy', summary: 'Download notes on government spending and taxation.', filename: 'fiscal-policy.pdf' },
       { id: 'monetary-policy', title: '5.3 Monetary Policy', summary: 'Download notes on central bank policies and interest rates.', filename: 'monetary-policy.pdf' },
       { id: 'supply-side-policies', title: '5.4 Supply-side Policies', summary: 'Download notes on structural economic reforms.', filename: 'supply-side-policies.pdf' },
+      { id: 'reasons-international-trade', title: '6.1 The reasons for international trade', summary: 'Download notes on comparative advantage and trade benefits.', filename: 'reasons-international-trade.pdf' },
+      { id: 'protectionism', title: '6.2 Protectionism', summary: 'Download notes on tariffs, quotas and trade barriers.', filename: 'protectionism.pdf' },
+      { id: 'current-account-balance-payments', title: '6.3 Current account of the balance of payments', summary: 'Download notes on balance of payments components.', filename: 'current-account-balance-payments.pdf' },
+      { id: 'exchange-rates', title: '6.4 Exchange rates', summary: 'Download notes on exchange rate systems and determination.', filename: 'exchange-rates.pdf' },
+      { id: 'policies-correct-imbalances', title: '6.5 Policies to correct imbalances in the current account', summary: 'Download notes on expenditure switching and reducing policies.', filename: 'policies-correct-imbalances.pdf' },
     ],
     aLevelTopics: [],
   },
@@ -322,12 +327,12 @@ export const subjects: Subject[] = [
     colorDark: 'subjects-sociology-dark',
     icon: '👥',
     asTopics: [
-      { id: 'socialisation-identity-methods', title: 'P1 – Socialisation, Identity and Methods of Research', summary: 'Download notes for this topic.', filename: 'socialisation-identity-methods.pdf' },
-      { id: 'the-family', title: 'P2 – The Family', summary: 'Download notes for this topic.', filename: 'the-family.pdf' },
+      { id: 'socialisation-identity-methods', title: 'P1 Socialisation, Identity and Methods of Research', summary: 'Download notes for this topic.', filename: 'socialisation-identity-methods.pdf' },
+      { id: 'the-family', title: 'P2 The Family', summary: 'Download notes for this topic.', filename: 'the-family.pdf' },
     ],
     aLevelTopics: [
-      { id: 'education', title: 'P3 – Education', summary: 'Download notes for this topic.', filename: 'education.pdf' },
-      { id: 'globalisation-media-religion', title: 'P4 – Globalisation, Media and Religion', summary: 'Download notes for this topic.', filename: 'globalisation-media-religion.pdf' },
+      { id: 'education', title: 'P3 Education', summary: 'Download notes for this topic.', filename: 'education.pdf' },
+      { id: 'globalisation-media-religion', title: 'P4 Globalisation, Media and Religion', summary: 'Download notes for this topic.', filename: 'globalisation-media-religion.pdf' },
     ],
   },
   {
