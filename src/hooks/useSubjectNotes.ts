@@ -34,7 +34,7 @@ export function useSubjectNotes(subjectCode: string) {
           '9702': 'Physics',
           '9990': 'Psychology',
           '9699': 'Sociology',
-          '9609': 'Business studies'
+          '9609': 'Business Studies'
         };
 
         const folderName = folderMap[subjectCode];
@@ -100,8 +100,6 @@ export function useSubjectNotes(subjectCode: string) {
     const normalize = (str: string) =>
       str
         .toLowerCase()
-        // remove topic numbering like "1.1 " at the start
-        .replace(/^\d+(?:\.\d+)*\s+/, '')
         // treat hyphens/underscores as spaces and drop extension
         .replace(/\.(pdf)$/g, '')
         .replace(/[-_]+/g, ' ')
@@ -109,12 +107,23 @@ export function useSubjectNotes(subjectCode: string) {
         .replace(/\s+/g, ' ')
         .trim();
 
-    const normalizedTopic = normalize(topicTitle);
+    // Try multiple variations for matching
+    const topicVariations = [
+      normalize(topicTitle), // Original topic title normalized
+      normalize(topicTitle.replace(/^\d+(?:\.\d+)*\s+/, '')), // Remove numbering from topic
+    ];
 
     const note = notes.find((n) => {
       const titleNorm = normalize(n.title);
       const fileNorm = normalize(n.file_name);
-      return titleNorm === normalizedTopic || fileNorm === normalizedTopic;
+      
+      // Check if any topic variation matches either the note title or filename
+      return topicVariations.some(variation => 
+        titleNorm === variation || 
+        fileNorm === variation ||
+        titleNorm.includes(variation) ||
+        fileNorm.includes(variation)
+      );
     });
 
     return note || null;
