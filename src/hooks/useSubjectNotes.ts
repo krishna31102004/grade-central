@@ -100,9 +100,9 @@ export function useSubjectNotes(subjectCode: string) {
     const normalize = (str: string) =>
       str
         .toLowerCase()
-        // treat hyphens/underscores as spaces and drop extension
+        // treat hyphens/underscores/dashes as spaces and drop extension
         .replace(/\.(pdf)$/g, '')
-        .replace(/[-_]+/g, ' ')
+        .replace(/[-_–—]+/g, ' ')
         // collapse multiple spaces and trim
         .replace(/\s+/g, ' ')
         .trim();

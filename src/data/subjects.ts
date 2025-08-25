@@ -272,7 +272,7 @@ export const subjects: Subject[] = [
     icon: '💻',
     asTopics: [
       { id: 'data-representation', title: '1.1 Data Representation', summary: 'Download notes for this topic.', filename: 'data-representation.pdf' },
-      { id: 'multimedia-graphics-sound', title: '1.2 Multimedia – Graphics, Sound', summary: 'Download notes for this topic.', filename: 'multimedia-graphics-sound.pdf' },
+      { id: 'multimedia-graphics-sound', title: '1.2 Multimedia Graphics, Sound', summary: 'Download notes for this topic.', filename: 'multimedia-graphics-sound.pdf' },
       { id: 'compression', title: '1.3 Compression', summary: 'Download notes for this topic.', filename: 'compression.pdf' },
       { id: 'networks-internet', title: '2.1 Networks including the Internet', summary: 'Download notes for this topic.', filename: 'networks-internet.pdf' },
       { id: 'computers-components', title: '3.1 Computers and Their Components', summary: 'Download notes for this topic.', filename: 'computers-components.pdf' },
